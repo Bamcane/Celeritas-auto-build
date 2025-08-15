@@ -1,6 +1,7 @@
 name: Auto Releases
 
 on:
+  push:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
@@ -80,7 +81,7 @@ jobs:
       - name: Write release body file
         working-directory: ./celeritas
         run: |
-          echo 'Built on commit: [link](https://git.taumc.org/embeddedt/celeritas/commit/$COMMIT_HASH)' >> body.txt
+          echo 'Built on commit: [link](https://git.taumc.org/embeddedt/celeritas/commit/$(COMMIT_HASH))' >> body.txt
           echo >> body.txt
           git rev-list $PREVIOUS_HASH^..$COMMIT_HASH --pretty >> body.txt
 
@@ -101,7 +102,7 @@ jobs:
 
       - name: Build Jars
         working-directory: ./celeritas
-        run: ./gradlew -Ptarget_versions=1.12.2 packageJar
+        run: ./gradlew -Ptarget_versions=1.21.8 packageJar
 
       - name: Update hash storage
         run: echo $COMMIT_HASH > ./latest_commit
@@ -115,7 +116,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1.14.0
         with:
-          artifacts: "celeritas/forge122/versions/1.12.2/build/libs/*"
+          artifacts: "celeritas/modern/versions/1.21.8-neoforge/build/libs/*"
           generateReleaseNotes: false
           bodyFile: "celeritas/body.txt"
           tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
