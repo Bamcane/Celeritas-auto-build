@@ -116,9 +116,9 @@ jobs:
           push: true
           tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
 
-      - uses: ncipollo/release-action@v1.14.0
+      - uses: ncipollo/release-action@v1.18.0
         with:
-          artifacts: "celeritas/build/libs/*"
+          artifacts: "celeritas/build/libs/**"
           generateReleaseNotes: false
           bodyFile: "celeritas/body.txt"
           tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
